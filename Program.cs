@@ -1,23 +1,45 @@
 ﻿using interfaceProperty;
 using NLog;
 
+DataClass dc = new DataClass();
+Datas ds = new Datas();
 
-static void SetNamen(string[] args)
-{
-    DataClass dc = new();
-    dc.SetName("aaaaaa");
-}
-
+dc.OutputLog();
+ds.OutputLog();
 
 internal class DataClass : IData
 {
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public Logger Logger => NLog.LogManager.GetCurrentClassLogger();
 
-    static NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+    public DataClass()
+    {
+        Name = this.GetType().Name;
+    }
 
     internal void SetName(string name)
     {
         this.Name = name;
-        _logger.Trace(name + DateTime.Now);
+    }
+
+    internal void OutputLog()
+    {
+        Logger.Info("ロガー名: " + Name);
+    }
+}
+
+internal class Datas : IData
+{
+    public string Name { get; set; } = string.Empty;
+    public Logger Logger => NLog.LogManager.GetCurrentClassLogger();
+
+    public Datas()
+    {
+        Name = this.GetType().Name;
+    }
+
+    internal void OutputLog()
+    {
+        Logger.Trace("ロガー名: " + Name);
     }
 }
